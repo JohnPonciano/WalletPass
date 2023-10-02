@@ -1,12 +1,16 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from "next/router";
 import Link from 'next/link';
+
 const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [masterKey, setMasterKey] = useState('');
-  const router = useRouter(); // Inicialize o useRouter
+  const [error, setError] = useState(null); // Estado para armazenar mensagens de erro
+  const router = useRouter();
+  const emailRef = useRef(null);
+
   useEffect(() => {
     generateMasterKey();
   }, []);
@@ -46,10 +50,13 @@ const Register = () => {
         console.log('Registro bem-sucedido:', data);
         router.push("/login");
       } else {
-        console.log('Erro no registro');
+        const responseData = await response.json();
+        setError(responseData.message); // Configurar a mensagem de erro do estado
+        emailRef.current.focus(); // Colocar foco no campo de email após um erro
       }
     } catch (error) {
       console.error('Erro no registro:', error);
+      setError('Erro interno no registro');
     }
   };
 
@@ -57,6 +64,11 @@ const Register = () => {
     <div className="container mt-5">
       <h1 className="mb-4">Registro</h1>
       <form onSubmit={handleRegister}>
+      {error && (
+          <div className="alert alert-danger" role="alert">
+            {error}
+          </div>
+        )}
         <div className="mb-3">
           <label htmlFor="email" className="form-label">
             Email:
@@ -67,6 +79,7 @@ const Register = () => {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            ref={emailRef}
             required
           />
         </div>
