@@ -2,8 +2,7 @@
 # Wallet-pass
 
 Pequeno sistema local, com suporte a multiplos usuarios, para gerar e listar seus site seu email e a senha que foi gerada.
-
-
+[![S6bHj.gif](https://s6.gifyu.com/images/S6bHj.gif)](https://gifyu.com/image/S6bHj)
 
 
 ## Stack utilizada
