@@ -9,12 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@prisma/client": "^5.3.1",
+    "bootstrap": "^5.3.2",
+    "crypto-random-string": "^5.0.0",
+    "next": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "next": "latest"
+    "sqlite3": "^5.1.6"
   },
   "devDependencies": {
     "eslint": "latest",
     "eslint-config-next": "latest"
+  },
+  "prisma": {
+    "schema": "prisma/schema.prisma"
   }
 }
