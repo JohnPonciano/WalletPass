@@ -1,0 +1,18 @@
+{
+    "builds": [
+      {
+        "src": "package.json",
+        "use": "@vercel/node"
+      }
+    ],
+    "version": 2,
+    "env": {
+      "PRISMA_GENERATE": "npm run generate"
+    },
+    "functions": {
+      "api/**/*.js": {
+        "runtime": "nodejs16"
+      }
+    }
+  }
+  
