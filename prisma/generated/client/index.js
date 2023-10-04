@@ -81,6 +81,9 @@ Prisma.NullTypes = {
  * Enums
  */
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
+  ReadUncommitted: 'ReadUncommitted',
+  ReadCommitted: 'ReadCommitted',
+  RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
 });
 
@@ -101,6 +104,11 @@ exports.Prisma.PasswordScalarFieldEnum = {
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
 };
 
 
@@ -130,13 +138,18 @@ const config = {
         "fromEnvVar": null,
         "value": "debian-openssl-3.0.x",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "rhel-openssl-1.0.x"
       }
     ],
     "previewFeatures": [],
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null
+    "rootEnvPath": "../../../.env",
+    "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../..",
   "clientVersion": "5.3.1",
@@ -144,17 +157,19 @@ const config = {
   "datasourceNames": [
     "db"
   ],
-  "activeProvider": "sqlite",
+  "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
-        "fromEnvVar": null,
-        "value": "file:./dev.db"
+        "fromEnvVar": "DATABASE_URL",
+        "value": null
       }
     }
   },
-  "inlineSchema": "Ly8gc2NoZW1hLnByaXNtYQoKZ2VuZXJhdG9yIGNsaWVudCB7CiAgcHJvdmlkZXIgPSAicHJpc21hLWNsaWVudC1qcyIKICBvdXRwdXQgICA9ICIuL2dlbmVyYXRlZC9jbGllbnQiCn0KCmRhdGFzb3VyY2UgZGIgewogIHByb3ZpZGVyID0gInNxbGl0ZSIKICB1cmwgICAgICA9ICJmaWxlOi4vZGV2LmRiIgp9Cgptb2RlbCBVc2VyIHsKICBpZCAgICAgICAgSW50ICAgICAgQGlkIEBkZWZhdWx0KGF1dG9pbmNyZW1lbnQoKSkKICBlbWFpbCAgICAgU3RyaW5nICAgCiAgbWFzdGVyS2V5IFN0cmluZyAgIEB1bmlxdWUKICBwYXNzd29yZHMgUGFzc3dvcmRbXQp9Cgptb2RlbCBQYXNzd29yZCB7CiAgaWQgICAgICAgIEludCAgICAgIEBpZCBAZGVmYXVsdChhdXRvaW5jcmVtZW50KCkpCiAgc2l0ZSAgICAgIFN0cmluZwogIGVtYWlsICAgICBTdHJpbmcKICB2YWx1ZSAgICAgU3RyaW5nCiAgdXNlcklkICAgIEludAogIHVzZXIgICAgICBVc2VyICAgICBAcmVsYXRpb24oZmllbGRzOiBbdXNlcklkXSwgcmVmZXJlbmNlczogW2lkXSkKfQo=",
-  "inlineSchemaHash": "152c689093ab333b081f449660e66af84571122ef51824bcd0c5fa5e82ae73a1"
+  "inlineSchema": "Ly8gc2NoZW1hLnByaXNtYQoKZ2VuZXJhdG9yIGNsaWVudCB7CiAgcHJvdmlkZXIgPSAicHJpc21hLWNsaWVudC1qcyIKICBvdXRwdXQgICA9ICIuL2dlbmVyYXRlZC9jbGllbnQiCiAgYmluYXJ5VGFyZ2V0cyA9IFsibmF0aXZlIiwgInJoZWwtb3BlbnNzbC0xLjAueCJdCn0KCi8vIFVzZSBhIHZhcmnDoXZlbCBkZSBhbWJpZW50ZSBEQVRBQkFTRV9VUkwgcGFyYSBjb25maWd1cmFyIGEgY29uZXjDo28gY29tIG8gUG9zdGdyZVNRTApkYXRhc291cmNlIGRiIHsKICBwcm92aWRlciA9ICJwb3N0Z3Jlc3FsIgogIHVybCAgICAgID0gZW52KCJEQVRBQkFTRV9VUkwiKSAvLyBDZXJ0aWZpcXVlLXNlIGRlIGRlZmluaXIgZXNzYSB2YXJpw6F2ZWwgZGUgYW1iaWVudGUgbm8gVmVyY2VsCn0KCm1vZGVsIFVzZXIgewogIGlkICAgICAgICBJbnQgICAgICBAaWQgQGRlZmF1bHQoYXV0b2luY3JlbWVudCgpKQogIGVtYWlsICAgICBTdHJpbmcgICAKICBtYXN0ZXJLZXkgU3RyaW5nICAgQHVuaXF1ZQogIHBhc3N3b3JkcyBQYXNzd29yZFtdCn0KCm1vZGVsIFBhc3N3b3JkIHsKICBpZCAgICAgICAgSW50ICAgICAgQGlkIEBkZWZhdWx0KGF1dG9pbmNyZW1lbnQoKSkKICBzaXRlICAgICAgU3RyaW5nCiAgZW1haWwgICAgIFN0cmluZwogIHZhbHVlICAgICBTdHJpbmcKICB1c2VySWQgICAgSW50CiAgdXNlciAgICAgIFVzZXIgICAgIEByZWxhdGlvbihmaWVsZHM6IFt1c2VySWRdLCByZWZlcmVuY2VzOiBbaWRdKQp9Cg==",
+  "inlineSchemaHash": "ffc01b0c8f1417efc8f808bff360edc53c1c439efbe77a0309795d542603b862",
+  "noEngine": false
 }
 
 const fs = require('fs')
@@ -193,6 +208,10 @@ Object.assign(exports, Prisma)
 // file annotations for bundling tools to include these files
 path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
 path.join(process.cwd(), "prisma/generated/client/libquery_engine-debian-openssl-3.0.x.so.node")
+
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-rhel-openssl-1.0.x.so.node");
+path.join(process.cwd(), "prisma/generated/client/libquery_engine-rhel-openssl-1.0.x.so.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "prisma/generated/client/schema.prisma")

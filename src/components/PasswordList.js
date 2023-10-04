@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import PasswordField from "./BlurPassword";
 
-
 const PasswordList = () => {
   const [passwords, setPasswords] = useState([]);
   const [userId, setUserId] = useState("");
   const [masterKey, setMasterKey] = useState("");
-   // Inicialize o useRouter
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -33,7 +31,6 @@ const PasswordList = () => {
             setPasswords(data);
           } else {
             console.log("Você não está logado ou tivemos erros ao buscar senhas");
-             // Redireciona para a página de login
           }
         } catch (error) {
           console.error("Erro ao buscar senhas:", error);
@@ -66,6 +63,9 @@ const PasswordList = () => {
     }
   };
 
+  // Filtra as senhas para excluir aquelas com 'wallet-pass.local' no site
+  const filteredPasswords = passwords.filter((password) => password.site !== "wallet-pass.local");
+
   return (
     <div>
       <h2>Passwords</h2>
@@ -84,7 +84,7 @@ const PasswordList = () => {
           </tr>
         </thead>
         <tbody>
-          {passwords.map((password) => (
+          {filteredPasswords.map((password) => (
             <tr key={password.id}>
               <td>{password.site}</td>
               <td>{password.email}</td>

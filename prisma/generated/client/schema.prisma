@@ -3,11 +3,13 @@
 generator client {
   provider = "prisma-client-js"
   output   = "./generated/client"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
 }
 
+// Use a variável de ambiente DATABASE_URL para configurar a conexão com o PostgreSQL
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // Certifique-se de definir essa variável de ambiente no Vercel
 }
 
 model User {

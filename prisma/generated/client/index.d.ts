@@ -685,6 +685,10 @@ export namespace Prisma {
             args: Prisma.UserCreateArgs<ExtArgs>,
             result: $Utils.PayloadToResult<Prisma.$UserPayload>
           }
+          createMany: {
+            args: Prisma.UserCreateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
           delete: {
             args: Prisma.UserDeleteArgs<ExtArgs>,
             result: $Utils.PayloadToResult<Prisma.$UserPayload>
@@ -746,6 +750,10 @@ export namespace Prisma {
           create: {
             args: Prisma.PasswordCreateArgs<ExtArgs>,
             result: $Utils.PayloadToResult<Prisma.$PasswordPayload>
+          }
+          createMany: {
+            args: Prisma.PasswordCreateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
           }
           delete: {
             args: Prisma.PasswordDeleteArgs<ExtArgs>,
@@ -1291,6 +1299,22 @@ export namespace Prisma {
     ): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, 'create'>, never, ExtArgs>
 
     /**
+     * Create many Users.
+     *     @param {UserCreateManyArgs} args - Arguments to create many Users.
+     *     @example
+     *     // Create many Users
+     *     const user = await prisma.user.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends UserCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, UserCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
      * Delete a User.
      * @param {UserDeleteArgs} args - Arguments to delete one User.
      * @example
@@ -1757,6 +1781,18 @@ export namespace Prisma {
      * The data needed to create a User.
      */
     data: XOR<UserCreateInput, UserUncheckedCreateInput>
+  }
+
+
+  /**
+   * User createMany
+   */
+  export type UserCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Users.
+     */
+    data: UserCreateManyInput | UserCreateManyInput[]
+    skipDuplicates?: boolean
   }
 
 
@@ -2238,6 +2274,22 @@ export namespace Prisma {
     ): Prisma__PasswordClient<$Result.GetResult<Prisma.$PasswordPayload<ExtArgs>, T, 'create'>, never, ExtArgs>
 
     /**
+     * Create many Passwords.
+     *     @param {PasswordCreateManyArgs} args - Arguments to create many Passwords.
+     *     @example
+     *     // Create many Passwords
+     *     const password = await prisma.password.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends PasswordCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, PasswordCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
      * Delete a Password.
      * @param {PasswordDeleteArgs} args - Arguments to delete one Password.
      * @example
@@ -2710,6 +2762,18 @@ export namespace Prisma {
 
 
   /**
+   * Password createMany
+   */
+  export type PasswordCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Passwords.
+     */
+    data: PasswordCreateManyInput | PasswordCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+
+  /**
    * Password update
    */
   export type PasswordUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
@@ -2825,6 +2889,9 @@ export namespace Prisma {
    */
 
   export const TransactionIsolationLevel: {
+    ReadUncommitted: 'ReadUncommitted',
+    ReadCommitted: 'ReadCommitted',
+    RepeatableRead: 'RepeatableRead',
     Serializable: 'Serializable'
   };
 
@@ -2859,6 +2926,14 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+  export const QueryMode: {
+    default: 'default',
+    insensitive: 'insensitive'
+  };
+
+  export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
   /**
    * Field references 
    */
@@ -2872,6 +2947,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
    * Reference to a field of type 'String'
    */
   export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
@@ -2879,9 +2961,23 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'String[]'
+   */
+  export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
   /**
    * Deep Input Types
@@ -3018,6 +3114,12 @@ export namespace Prisma {
     passwords?: PasswordUncheckedUpdateManyWithoutUserNestedInput
   }
 
+  export type UserCreateManyInput = {
+    id?: number
+    email: string
+    masterKey: string
+  }
+
   export type UserUpdateManyMutationInput = {
     email?: StringFieldUpdateOperationsInput | string
     masterKey?: StringFieldUpdateOperationsInput | string
@@ -3059,6 +3161,14 @@ export namespace Prisma {
     userId?: IntFieldUpdateOperationsInput | number
   }
 
+  export type PasswordCreateManyInput = {
+    id?: number
+    site: string
+    email: string
+    value: string
+    userId: number
+  }
+
   export type PasswordUpdateManyMutationInput = {
     site?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -3075,8 +3185,8 @@ export namespace Prisma {
 
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -3086,8 +3196,8 @@ export namespace Prisma {
 
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3095,6 +3205,7 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
@@ -3136,8 +3247,8 @@ export namespace Prisma {
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -3152,8 +3263,8 @@ export namespace Prisma {
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3161,6 +3272,7 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
     not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
@@ -3209,12 +3321,14 @@ export namespace Prisma {
   export type PasswordCreateNestedManyWithoutUserInput = {
     create?: XOR<PasswordCreateWithoutUserInput, PasswordUncheckedCreateWithoutUserInput> | PasswordCreateWithoutUserInput[] | PasswordUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PasswordCreateOrConnectWithoutUserInput | PasswordCreateOrConnectWithoutUserInput[]
+    createMany?: PasswordCreateManyUserInputEnvelope
     connect?: PasswordWhereUniqueInput | PasswordWhereUniqueInput[]
   }
 
   export type PasswordUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<PasswordCreateWithoutUserInput, PasswordUncheckedCreateWithoutUserInput> | PasswordCreateWithoutUserInput[] | PasswordUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PasswordCreateOrConnectWithoutUserInput | PasswordCreateOrConnectWithoutUserInput[]
+    createMany?: PasswordCreateManyUserInputEnvelope
     connect?: PasswordWhereUniqueInput | PasswordWhereUniqueInput[]
   }
 
@@ -3226,6 +3340,7 @@ export namespace Prisma {
     create?: XOR<PasswordCreateWithoutUserInput, PasswordUncheckedCreateWithoutUserInput> | PasswordCreateWithoutUserInput[] | PasswordUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PasswordCreateOrConnectWithoutUserInput | PasswordCreateOrConnectWithoutUserInput[]
     upsert?: PasswordUpsertWithWhereUniqueWithoutUserInput | PasswordUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PasswordCreateManyUserInputEnvelope
     set?: PasswordWhereUniqueInput | PasswordWhereUniqueInput[]
     disconnect?: PasswordWhereUniqueInput | PasswordWhereUniqueInput[]
     delete?: PasswordWhereUniqueInput | PasswordWhereUniqueInput[]
@@ -3247,6 +3362,7 @@ export namespace Prisma {
     create?: XOR<PasswordCreateWithoutUserInput, PasswordUncheckedCreateWithoutUserInput> | PasswordCreateWithoutUserInput[] | PasswordUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PasswordCreateOrConnectWithoutUserInput | PasswordCreateOrConnectWithoutUserInput[]
     upsert?: PasswordUpsertWithWhereUniqueWithoutUserInput | PasswordUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PasswordCreateManyUserInputEnvelope
     set?: PasswordWhereUniqueInput | PasswordWhereUniqueInput[]
     disconnect?: PasswordWhereUniqueInput | PasswordWhereUniqueInput[]
     delete?: PasswordWhereUniqueInput | PasswordWhereUniqueInput[]
@@ -3272,8 +3388,8 @@ export namespace Prisma {
 
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -3283,8 +3399,8 @@ export namespace Prisma {
 
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3297,8 +3413,8 @@ export namespace Prisma {
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -3313,8 +3429,8 @@ export namespace Prisma {
 
   export type NestedFloatFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
@@ -3324,8 +3440,8 @@ export namespace Prisma {
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3355,6 +3471,11 @@ export namespace Prisma {
   export type PasswordCreateOrConnectWithoutUserInput = {
     where: PasswordWhereUniqueInput
     create: XOR<PasswordCreateWithoutUserInput, PasswordUncheckedCreateWithoutUserInput>
+  }
+
+  export type PasswordCreateManyUserInputEnvelope = {
+    data: PasswordCreateManyUserInput | PasswordCreateManyUserInput[]
+    skipDuplicates?: boolean
   }
 
   export type PasswordUpsertWithWhereUniqueWithoutUserInput = {
@@ -3420,6 +3541,13 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     email?: StringFieldUpdateOperationsInput | string
     masterKey?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PasswordCreateManyUserInput = {
+    id?: number
+    site: string
+    email: string
+    value: string
   }
 
   export type PasswordUpdateWithoutUserInput = {

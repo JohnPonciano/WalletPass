@@ -24,10 +24,8 @@ export default async function handler(req, res) {
       // Se as credenciais forem válidas, busque as senhas do usuário
       const passwords = await prisma.password.findMany({
         where: {
-          userId: parseInt(userId),// Converta userId para um número, se necessário
-          NOT: {
-            site: 'wallet-pass.local'
-          } 
+          userId: parseInt(userId),
+          
         },
         select: {
           id: true,
