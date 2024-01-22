@@ -8,6 +8,7 @@ export default function HomePage() {
             <div className="text-center">
                 <h1>Wallet Pass - Alpha</h1>
                 <p>Não tão seguro ainda, mas estamos trabalhando pra isso.</p>
+                <h6>V0.2.1</h6>
                 <div>
                     <Link href="/login" className="btn btn-primary m-2">
                         Login
