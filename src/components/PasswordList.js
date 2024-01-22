@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import PasswordField from "./BlurPassword";
-
+import SearchBar from "./SearchBar";
 
 const PasswordList = () => {
   const [passwords, setPasswords] = useState([]);
   const [userId, setUserId] = useState("");
   const [masterKey, setMasterKey] = useState("");
+  
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -72,6 +73,7 @@ const PasswordList = () => {
 
   // Filtra as senhas para excluir aquelas com 'wallet-pass.local' no site
   const filteredPasswords = passwords.filter((password) => password.site !== "wallet-pass.local");
+  
 
   return (
     <div className={`container mt-4 `}>
@@ -83,20 +85,15 @@ const PasswordList = () => {
         Add new
       </Link>
 
+
+      {/* <SearchBar handleSearch={handleSearch} /> */}
+
+
       <button className="btn btn-danger mb-4" onClick={handleLogout}>
         Logouts
       </button>
       </div>
     </nav>
-
-
-
-
-
-      
-
-      
-      
 
       <div className={` table-responsive `}>
         <table className={`table table-striped table-dark`}>
