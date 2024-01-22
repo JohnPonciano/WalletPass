@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from "next/router";
 import Link from 'next/link';
+import '../../app/globals.css'
 
 const Register = () => {
   const [email, setEmail] = useState('');

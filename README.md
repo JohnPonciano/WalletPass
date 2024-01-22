@@ -31,7 +31,7 @@ Instale my-project com npm
   npm i
 ```
 ```bash
-    npx primsa generate
+    npx prisma generate
     npx prisma db push
 ```
 ```bash

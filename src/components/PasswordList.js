@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import PasswordField from "./BlurPassword";
 
+
 const PasswordList = () => {
   const [passwords, setPasswords] = useState([]);
   const [userId, setUserId] = useState("");
@@ -63,44 +64,70 @@ const PasswordList = () => {
     }
   };
 
+  const handleLogout = () => {
+    // Limpar o cache e redirecionar para a página de login (ou qualquer outra página desejada)
+    localStorage.clear();
+    window.location.href = "/login";
+  };
+
   // Filtra as senhas para excluir aquelas com 'wallet-pass.local' no site
   const filteredPasswords = passwords.filter((password) => password.site !== "wallet-pass.local");
 
   return (
-    <div>
-      <h2>Passwords</h2>
-
-      <Link href="/lobby" className="btn btn-success mb-4">
+    <div className={`container mt-4 `}>
+      <h2>🔒 Passwords</h2>
+      <br/>
+      <nav className="navbar navbar-expand-lg navbar-light bg-dark">
+      <div className="container">
+      <Link href="/lobby" className={`btn btn-success mb-4 `}>
         Add new
       </Link>
 
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Site</th>
-            <th>Email</th>
-            <th>Senha</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredPasswords.map((password) => (
-            <tr key={password.id}>
-              <td>{password.site}</td>
-              <td>{password.email}</td>
-              <PasswordField initialPassword={password.value} />
-              <td>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => onDelete(password.id)}
-                >
-                  Deletar
-                </button>
-              </td>
+      <button className="btn btn-danger mb-4" onClick={handleLogout}>
+        Logouts
+      </button>
+      </div>
+    </nav>
+
+
+
+
+
+      
+
+      
+      
+
+      <div className={` table-responsive `}>
+        <table className={`table table-striped table-dark`}>
+          <thead>
+            <tr>
+              <th>Site</th>
+              <th>Email</th>
+              <th>Senha</th>
+              <th>Ações</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredPasswords.map((password) => (
+              <tr key={password.id}>
+                <td>{password.site}</td>
+                <td>{password.email}</td>
+                <PasswordField initialPassword={password.value} />
+                <td>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => onDelete(password.id)}
+                  >
+                    Deletar
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
     </div>
   );
 };

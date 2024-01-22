@@ -3,7 +3,7 @@ import PasswordList from "@/components/PasswordList";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect } from "react";
 import Router from "next/router";
-
+import '../../app/globals.css'
 export default function Dashboard() {
   useEffect(() => {
     // Verifique se userId e masterKey estão ausentes no localStorage

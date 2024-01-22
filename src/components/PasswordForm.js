@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-
+import '../app/globals.css'
 const PasswordForm = ({ onCreate }) => {
   const [site, setSite] = useState("");
   const [email, setEmail] = useState("");
@@ -83,6 +83,7 @@ const PasswordForm = ({ onCreate }) => {
         {error && <div className="alert alert-danger">{error}</div>}
       </div>
     </div>
+
   );
 };
 
