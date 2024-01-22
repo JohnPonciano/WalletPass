@@ -76,7 +76,7 @@ const Login = () => {
             Senha Mestre:
           </label>
           <br />
-          <small className='text-body-secondary'>Salve a senha mestra em um lugar físico antes de completar o cadastro</small>
+          <h6 className='text-body-secondary'>Salve a senha mestra em um lugar físico antes de completar o cadastro</h6>
           <input
             type="text"
             className="form-control"
